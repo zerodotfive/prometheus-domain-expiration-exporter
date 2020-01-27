@@ -11,11 +11,11 @@ import (
 	"time"
 
 	"github.com/araddon/dateparse"
-	"github.com/likexian/whois-parser-go"
+	whoisparser "github.com/likexian/whois-parser-go"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/spf13/pflag"
-	"github.com/undiabler/golang-whois"
+	whois "github.com/undiabler/golang-whois"
 	yaml "gopkg.in/yaml.v2"
 )
 
@@ -104,6 +104,9 @@ func (d *DomainExpirationExporter) Collect(ch chan<- prometheus.Metric) {
 	res, err := doCheck(d.domain, d.checkTimeout)
 	if err != nil {
 		fmt.Printf("%s %s\n", d.domain, err)
+		d.secondsLeft.Set(float64(math.MaxInt16))
+		d.daysLeft.Set(float64(math.MaxInt16))
+		d.daysLeftRound.Set(float64(math.MaxInt16))
 		d.checkError.Set(float64(1))
 		return
 	}
