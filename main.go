@@ -84,7 +84,7 @@ func doCheck(domain string, timeout time.Duration) (time.Duration, error) {
 	if err != nil {
 		return time.Duration(0), err
 	}
-	d, err := dateparse.ParseStrict(result.Registrar.ExpirationDate)
+	d, err := dateparse.ParseStrict(result.Domain.ExpirationDate)
 	if err != nil {
 		return time.Duration(0), err
 	}
